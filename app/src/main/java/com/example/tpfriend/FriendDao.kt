@@ -1,14 +1,20 @@
 package com.example.tpfriend
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface FriendDao {
+
     @Query("SELECT * FROM friend")
     fun getAllFriends(): List<Friend>
+
     @Insert
     fun insertFriend(friend : Friend)
+
+    @Update
+    fun updateFriend(friend : Friend)
+
+    @Delete
+    fun removeFriend(friend : Friend)
+
 }

@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -23,13 +26,34 @@ class MainActivity : AppCompatActivity() {
         ).allowMainThreadQueries().build()
 
         val allFriends = _db.friendDao().getAllFriends()
-        allFriends.forEach {
-            friendsTextView.append("\n" + it.firstName)
+        val viewManager = LinearLayoutManager(this)
+        val viewFriendList = FriendList(allFriends)
+
+        fun refreshView() = viewFriendList.updateData(_db.friendDao().getAllFriends())
+
+        viewFriendList.setEventListener(
+            object : FriendList.EventListener{
+                override fun onFriendEdit(friend: Friend) {
+                    _db.friendDao().updateFriend(friend)
+                }
+
+                override fun onFriendDelete(friend: Friend) {
+                    _db.friendDao().removeFriend(friend)
+                    refreshView()
+                }
+            }
+        )
+
+        findViewById<RecyclerView>(R.id.rvFriend).apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewFriendList
         }
     }
 
     fun addOne(view: View) {
 
+        /*
         var editName = findViewById(R.id.FriendName) as EditText
         var editEmail = findViewById(R.id.FriendMail) as EditText
 
@@ -40,5 +64,7 @@ class MainActivity : AppCompatActivity() {
 
         editName.setText("")
         editEmail.setText("")
+
+         */
     }
 }
