@@ -10,7 +10,7 @@
         android:background="#FFFFFF">
 
         <LinearLayout
-            android:id="@+id/buttonLayout"
+            android:id="@+id/actionsLayout"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_centerVertical="true"
@@ -18,26 +18,26 @@
 
             <Button
                 android:id="@+id/Edit"
-                android:layout_width="50dp"
+                android:layout_width="100dp"
                 android:layout_height="50dp"
-                android:text="E"/>
+                android:text="Edit"/>
 
             <Button
                 android:id="@+id/Remove"
-                android:layout_width="50dp"
+                android:layout_width="100dp"
                 android:layout_height="50dp"
-                android:text="R"/>
+                android:text="Remove"/>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/inputLayout"
+            android:id="@+id/editLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:orientation="vertical"
             android:padding="5dp"
-            android:layout_toRightOf="@id/buttonLayout"
-            android:layout_toEndOf="@id/buttonLayout">
+            android:layout_toRightOf="@id/actionsLayout"
+            android:layout_toEndOf="@id/actionsLayout">
 
             <EditText
                 android:id="@+id/friendName"

@@ -4,16 +4,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var _db: FriendDataBase
+    lateinit var _viewFriendList: FriendList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,11 +25,11 @@ class MainActivity : AppCompatActivity() {
 
         val allFriends = _db.friendDao().getAllFriends()
         val viewManager = LinearLayoutManager(this)
-        val viewFriendList = FriendList(allFriends)
+        _viewFriendList = FriendList(allFriends)
 
-        fun refreshView() = viewFriendList.updateData(_db.friendDao().getAllFriends())
 
-        viewFriendList.setEventListener(
+
+        _viewFriendList.setEventListener(
             object : FriendList.EventListener{
                 override fun onFriendEdit(friend: Friend) {
                     _db.friendDao().updateFriend(friend)
@@ -47,24 +45,25 @@ class MainActivity : AppCompatActivity() {
         findViewById<RecyclerView>(R.id.rvFriend).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
-            adapter = viewFriendList
+            adapter = _viewFriendList
         }
+
+
     }
+
+    fun refreshView() = _viewFriendList.updateData(_db.friendDao().getAllFriends())
 
     fun addOne(view: View) {
 
-        /*
-        var editName = findViewById(R.id.FriendName) as EditText
-        var editEmail = findViewById(R.id.FriendMail) as EditText
+        var editName = findViewById(R.id.newFName) as EditText
+        var editEmail = findViewById(R.id.newFMail) as EditText
 
         var name = editName.text.toString()
 
         _db.friendDao().insertFriend(Friend(firstName = name, rating = 1000, email = editEmail.text.toString()))
-        friendsTextView.append("\n" + name)
+        refreshView()
 
         editName.setText("")
         editEmail.setText("")
-
-         */
     }
 }
